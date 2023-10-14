@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Link Checker</title>
+  <!-- Tambahkan Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="mt-5 mb-3">Link Checker</h1>
+
+    <!-- Form untuk memasukkan URL -->
+    <form action="http://localhost:3000/check-links" method="post">
+      <div class="form-group">
+        <label for="url">URL to Check:</label>
+        <input type="text" class="form-control" id="url" name="url" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Check Links</button>
+    </form>
+
+    <!-- Hasil pemeriksaan tautan -->
+    <div class="mt-4">
+      <h3>Results</h3>
+      <p>URL: <span id="result-url"></span></p>
+      <p>Total Links: <span id="result-link-count"></span></p>
+      <p>Broken Links: <span id="result-broken-count"></span></p>
+      <p>Green Links: <span id="result-green-count"></span></p>
+    </div>
+  </div>
+
+  <!-- Tambahkan Bootstrap JavaScript dan jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Tangani respons dari server dan tampilkan hasilnya di halaman
+    $(document).ready(function () {
+      $('form').submit(function (event) {
+        event.preventDefault();
+
+        const url = $('#url').val();
+
+        $.post('http://localhost:3000/check-links', { url }, function (data) {
+          $('#result-url').text(data.url);
+          $('#result-link-count').text(data.linkCount);
+          $('#result-broken-count').text(data.brokenCount);
+          $('#result-green-count').text(data.greenCount);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
