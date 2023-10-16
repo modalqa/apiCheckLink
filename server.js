@@ -2,13 +2,12 @@ const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const async = require('async');
-const bodyParser = require('body-parser');
-
 
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded())
 
 // Fungsi untuk menghitung jumlah tautan dengan status "broken" dan "green"
 function countLinkStatuses(linkStatuses) {
@@ -26,9 +25,16 @@ function countLinkStatuses(linkStatuses) {
   return { brokenCount, greenCount };
 }
 
+app.use(express.static('public'));
+
+app.get('/index', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
+
 app.post('/check-links', (req, res) => {
   const { url } = req.body;
 
+  console.log(req.body)
   if (!url) {
     return res.status(400).json({ error: 'URL is required' });
   }
